@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 print('Версия SQLAlchemy =', sqlalchemy.__version__)
 
-engine = create_engine('sqlite:///DB.db')
+engine = create_engine('sqlite:///bases/DB.db')
 
 Base = declarative_base()
 
