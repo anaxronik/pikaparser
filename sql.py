@@ -14,11 +14,15 @@ session = Session()
 Base = declarative_base()
 
 
-
-class Post(Base):
-    __tablename__ = 'posts'
-
+class ItemDB:
     id = Column(Integer, primary_key=True)
+
+    def add_to_session(self):
+        session.add(self)
+
+
+class Post(Base, ItemDB):
+    __tablename__ = 'posts'
     date_parse = Column(DateTime, default=datetime.datetime.utcnow)
     name = Column(String)
     url = Column(String)
@@ -42,8 +46,22 @@ class Post(Base):
     def __repr__(self):
         return f'<Post: name = {self.name}, >'
 
-    def add_to_session(self):
-        session.add(self)
+
+class PostUrl(Base, ItemDB):
+    __tablename__ = 'post_list'
+    url = Column(String, unique=True)
+    title = Column(String)
+    pika_id = Column(String, unique=True)
+    date_parse = Column(DateTime, default=datetime.datetime.utcnow)
+    category = Column(String)
+
+    def __init__(self, title, pika_id, url, category):
+        self.title = title
+        self.pika_id = pika_id
+        self.url = url
+        self.category = category
+
+        self.add_to_session()
 
 
 def commit():
